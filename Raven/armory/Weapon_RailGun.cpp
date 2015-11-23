@@ -62,7 +62,7 @@ inline void RailGun::ShootAt(Vector2D pos)
 //---------------------------- Desirability -----------------------------------
 //
 //-----------------------------------------------------------------------------
-double RailGun::GetDesirability(double DistToTarget)
+double RailGun::GetDesirability(double DistToTarget, double TargetHealth)
 {
   if (m_iNumRoundsLeft == 0)
   {

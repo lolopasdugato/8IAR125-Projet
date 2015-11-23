@@ -60,7 +60,7 @@ inline void Blaster::ShootAt(Vector2D pos)
 //---------------------------- Desirability -----------------------------------
 //
 //-----------------------------------------------------------------------------
-double Blaster::GetDesirability(double DistToTarget)
+double Blaster::GetDesirability(double DistToTarget, double TargetHealth)
 {
   //fuzzify distance and amount of ammo
   m_FuzzyModule.Fuzzify("DistToTarget", DistToTarget);

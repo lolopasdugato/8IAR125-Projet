@@ -84,7 +84,7 @@ inline void ShotGun::ShootAt(Vector2D pos)
 //---------------------------- Desirability -----------------------------------
 //
 //-----------------------------------------------------------------------------
-inline double ShotGun::GetDesirability(double DistToTarget)
+inline double ShotGun::GetDesirability(double DistToTarget, double TargetHealth)
 {
   if (m_iNumRoundsLeft == 0)
   {

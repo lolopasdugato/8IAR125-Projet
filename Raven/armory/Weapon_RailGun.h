@@ -30,7 +30,7 @@ public:
 
   void  ShootAt(Vector2D pos);
 
-  double GetDesirability(double DistToTarget);
+  double GetDesirability(double DistToTarget, double TargetHealth);
 };
 
 

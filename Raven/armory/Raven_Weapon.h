@@ -115,7 +115,7 @@ public:
   //this method returns a value representing the desirability of using the
   //weapon. This is used by the AI to select the most suitable weapon for
   //a bot's current situation. This value is calculated using fuzzy logic
-  virtual double GetDesirability(double DistToTarget)=0;
+  virtual double GetDesirability(double DistToTarget, double TargetHealth)=0;
 
   //returns the desirability score calculated in the last call to GetDesirability
   //(just used for debugging)
