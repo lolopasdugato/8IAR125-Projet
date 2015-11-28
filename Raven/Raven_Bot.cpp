@@ -102,6 +102,7 @@ Raven_Bot::~Raven_Bot()
   delete m_pSensoryMem;
 }
 
+
 //------------------------------- Spawn ---------------------------------------
 //
 //  spawns the bot at the given position
