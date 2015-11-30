@@ -83,7 +83,7 @@ void Raven_WeaponSystem::InitializeFuzzyModule()
 
 	FzSet& Velocity_Low = TargetVelocity.AddLeftShoulderSet("Velocity_Low", 0, 25, 50);
 	FzSet& Velocity_Medium = TargetVelocity.AddTriangularSet("Velocity_Medium", 25, 50, 75);
-	FzSet& Velocity_High = TargetVelocity.AddRightShoulderSet("Velocity_High", 50, 75, 100);
+	FzSet& Velocity_High = TargetVelocity.AddRightShoulderSet("Velocity_High", 50, 75, 150);
 
 	FuzzyVariable& VisibilityTime = m_FuzzyModule.CreateFLV("VisibilityTime");
 

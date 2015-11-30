@@ -107,11 +107,11 @@ void RocketLauncher::InitializeFuzzyModule()
 
   FuzzyVariable& TargetHealth = m_FuzzyModule.CreateFLV("TargetHealth");
   FzSet& Target_High_HP = TargetHealth.AddRightShoulderSet("Target_High_HP", 20, 40, 100);
-  FzSet& Target_Low_HP = TargetHealth.AddTriangularSet("Target_Low_HP", 0, 30, 40);
+  FzSet& Target_Low_HP = TargetHealth.AddTriangularSet("Target_Low_HP", -11, 30, 40);
 
   FuzzyVariable& Health = m_FuzzyModule.CreateFLV("Health");
   FzSet& High_HP = Health.AddRightShoulderSet("High_HP", 20, 40, 100);
-  FzSet& Low_HP = Health.AddTriangularSet("Low_HP", 0, 30, 40);
+  FzSet& Low_HP = Health.AddTriangularSet("Low_HP", -11, 30, 40);
 
   m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Loads, Target_Low_HP, High_HP), VeryDesirable);
   m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Loads, Target_Low_HP, Low_HP), Undesirable);

@@ -1,4 +1,5 @@
 #include "Goal_GetItem.h"
+#include "Goal_DodgeSideToSide.h"
 #include "../Raven_ObjectEnumerations.h"
 #include "../Raven_Bot.h"
 #include "../navigation/Raven_PathPlanner.h"
@@ -40,15 +41,27 @@ int ItemTypeToGoalType(int gt)
 void Goal_GetItem::Activate()
 {
   m_iStatus = active;
+
+  RemoveAllSubgoals();
   
   m_pGiverTrigger = 0;
   
   //request a path to the item
   m_pOwner->GetPathPlanner()->RequestPathToItem(m_iItemToGet);
 
-  //the bot may have to wait a few update cycles before a path is calculated
-  //so for appearances sake it just wanders
-  AddSubgoal(new Goal_Wander(m_pOwner));
+  //if the bot has space to strafe then do so
+  Vector2D dummy;
+  if (m_pOwner->GetTargetSys()->isTargetPresent() && (m_pOwner->canStepLeft(dummy) || m_pOwner->canStepRight(dummy)))
+  {
+	  AddSubgoal(new Goal_DodgeSideToSide(m_pOwner));
+  }
+
+  //if not able to strafe,the bot may have to wait a few update cycles before 
+  //a path is calculated so for appearances sake it just wanders
+  else
+  {
+	  AddSubgoal(new Goal_Wander(m_pOwner));
+  }
 
 }
 
@@ -90,6 +103,16 @@ bool Goal_GetItem::HandleMessage(const Telegram& msg)
 
       AddSubgoal(new Goal_FollowPath(m_pOwner,
                                      m_pOwner->GetPathPlanner()->GetPath()));
+
+	  if (m_pOwner->GetTargetSys()->isTargetPresent())
+	  {
+		  Vector2D dummy;
+		  //if the bot has space to strafe then do so
+		  if (m_pOwner->canStepLeft(dummy) || m_pOwner->canStepRight(dummy))
+		  {
+			  AddSubgoal(new Goal_DodgeSideToSide(m_pOwner));
+		  }
+	  }
 
       //get the pointer to the item
       m_pGiverTrigger = static_cast<Raven_Map::TriggerType*>(msg.ExtraInfo);
