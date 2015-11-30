@@ -63,7 +63,7 @@ int Goal_DodgeSideToSide::Process()
   //if target goes out of view terminate
   if (!m_pOwner->GetTargetSys()->isTargetWithinFOV())
   {
-    m_iStatus = completed;
+    m_iStatus = inactive;
   }
 
   //else if bot reaches the target position set status to inactive so the goal 
