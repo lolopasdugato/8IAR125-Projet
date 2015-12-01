@@ -24,6 +24,7 @@
 #include "misc/utils.h"
 #include "game/EntityFunctionTemplates.h"
 #include "Raven_Bot.h"
+#include "Team.h"
 #include "navigation/pathmanager.h"
 
 
@@ -40,6 +41,9 @@ private:
 
   //the current game map
   Raven_Map*                       m_pMap;
+
+  //a list of all the teams
+  std::list<Team*>				   m_Teams;
  
   //a list of all the bots that are inhabiting the map
   std::list<Raven_Bot*>            m_Bots;
@@ -60,7 +64,7 @@ private:
   bool                             m_bPaused;
 
   //if true a bot is removed from the game
-  bool                             m_bRemoveABot;
+  Team*							   m_pRemoveABot;
 
   //when a bot is killed a "grave" is displayed for a few seconds. This
   //class manages the graves
@@ -93,14 +97,14 @@ public:
   //loads an environment from a file
   bool LoadMap(const std::string& FileName); 
 
-  void AddBots(unsigned int NumBotsToAdd);
+  void AddBots(unsigned int NumBotsToAdd, Team* team);
   void AddRocket(Raven_Bot* shooter, Vector2D target);
   void AddRailGunSlug(Raven_Bot* shooter, Vector2D target);
   void AddShotGunPellet(Raven_Bot* shooter, Vector2D target);
   void AddBolt(Raven_Bot* shooter, Vector2D target);
 
   //removes the last bot to be added
-  void RemoveBot();
+  void RemoveBot(Team* team);
 
   //returns true if a bot of size BoundingRadius cannot move from A to B
   //without bumping into world geometry
@@ -157,6 +161,7 @@ public:
   const Raven_Map* const                   GetMap()const{return m_pMap;}
   Raven_Map* const                         GetMap(){return m_pMap;}
   const std::list<Raven_Bot*>&             GetAllBots()const{return m_Bots;}
+  const std::list<Team*>&				   GetAllTeams()const { return m_Teams; }
   PathManager<Raven_PathPlanner>* const    GetPathManager(){return m_pPathManager;}
   int                                      GetNumBots()const{return m_Bots.size();}
 

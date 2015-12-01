@@ -23,7 +23,7 @@
 #include "Debug/DebugConsole.h"
 
 //-------------------------- ctor ---------------------------------------------
-Raven_Bot::Raven_Bot(Raven_Game* world,Vector2D pos):
+Raven_Bot::Raven_Bot(Team* team, Raven_Game* world,Vector2D pos):
 
   MovingEntity(pos,
                script->GetDouble("Bot_Scale"),
@@ -35,6 +35,7 @@ Raven_Bot::Raven_Bot(Raven_Game* world,Vector2D pos):
                script->GetDouble("Bot_MaxHeadTurnRate"),
                script->GetDouble("Bot_MaxForce")),
                  
+				 m_pTeam(team),
                  m_iMaxHealth(script->GetInt("Bot_MaxHealth")),
                  m_iHealth(script->GetInt("Bot_MaxHealth")),
                  m_pPathPlanner(NULL),
@@ -498,7 +499,7 @@ void Raven_Bot::Render()
   gdi->ClosedShape(m_vecBotVBTrans);
   
   //draw the head
-  gdi->BrownBrush();
+  (gdi->*(m_pTeam->GetPen()))();
   gdi->Circle(Pos(), 6.0 * Scale().x);
 
 

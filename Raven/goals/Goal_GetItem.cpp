@@ -89,13 +89,9 @@ int Goal_GetItem::Process()
 			m_SubGoals.front()->Terminate();
 			delete m_SubGoals.front();
 			m_SubGoals.pop_front();
-			debug_con << m_pOwner->ID() << " delete strafe" << "";
-			m_iStatus = ProcessSubgoals();
-			debug_con << m_pOwner->ID() << m_iStatus << "";
 		}
-		else
-			//process the subgoals
-			m_iStatus = ProcessSubgoals();
+		//process the subgoals
+		m_iStatus = ProcessSubgoals();
 	}
 
 	return m_iStatus;

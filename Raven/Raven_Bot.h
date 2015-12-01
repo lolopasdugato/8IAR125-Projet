@@ -28,6 +28,7 @@ class Raven_Bot;
 class Goal_Think;
 class Raven_WeaponSystem;
 class Raven_SensoryMemory;
+class Team;
 
 
 
@@ -39,6 +40,9 @@ private:
   enum Status{alive, dead, spawning};
 
 private:
+
+  //the team
+  Team*								 m_pTeam;
 
   //alive, dead or spawning?
   Status                             m_Status;
@@ -125,7 +129,7 @@ private:
 
 public:
   
-  Raven_Bot(Raven_Game* world, Vector2D pos);
+  Raven_Bot(Team* team, Raven_Game* world, Vector2D pos);
   virtual ~Raven_Bot();
 
   //the usual suspects
@@ -200,6 +204,7 @@ public:
   bool          canStepBackward(Vector2D& PositionOfStep)const;
 
   
+  Team* const						 GetTeam() { return m_pTeam; }
   Raven_Game* const                  GetWorld(){return m_pWorld;} 
   Raven_Steering* const              GetSteering(){return m_pSteering;}
   Raven_PathPlanner* const           GetPathPlanner(){return m_pPathPlanner;}

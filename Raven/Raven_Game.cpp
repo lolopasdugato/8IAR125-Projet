@@ -36,7 +36,7 @@
 //-----------------------------------------------------------------------------
 Raven_Game::Raven_Game():m_pSelectedBot(NULL),
                          m_bPaused(false),
-                         m_bRemoveABot(false),
+                         m_pRemoveABot(NULL),
                          m_pMap(NULL),
                          m_pPathManager(NULL),
                          m_pGraveMarkers(NULL)
@@ -179,19 +179,22 @@ void Raven_Game::Update()
 
   //if the user has requested that the number of bots be decreased, remove
   //one
-  if (m_bRemoveABot)
-  { 
-    if (!m_Bots.empty())
-    {
-      Raven_Bot* pBot = m_Bots.back();
-      if (pBot == m_pSelectedBot)m_pSelectedBot=0;
-      NotifyAllBotsOfRemoval(pBot);
-      delete m_Bots.back();
-      m_Bots.remove(pBot);
-      pBot = 0;
-    }
+  if (m_pRemoveABot)
+  {
+	std::list<Raven_Bot*>::const_iterator curBot = m_Bots.begin();
+	for (curBot; curBot != m_Bots.end(); ++curBot)
+	{
+		if ((*curBot)->GetTeam() == m_pRemoveABot)
+		{
+			if ((*curBot) == m_pSelectedBot)m_pSelectedBot = 0;
+			NotifyAllBotsOfRemoval(*curBot);
+			delete *curBot;
+			m_Bots.remove(*curBot);
+			break;
+		}
+	}
 
-    m_bRemoveABot = false;
+	m_pRemoveABot = NULL;
   }
 }
 
@@ -244,13 +247,24 @@ bool Raven_Game::AttemptToAddBot(Raven_Bot* pBot)
 //
 //  Adds a bot and switches on the default steering behavior
 //-----------------------------------------------------------------------------
-void Raven_Game::AddBots(unsigned int NumBotsToAdd)
-{ 
+void Raven_Game::AddBots(unsigned int NumBotsToAdd, Team* team)
+{
+  //if the teams list doesn't contain the team, push it
+  std::list<Team*>::const_iterator curTeam = m_Teams.begin();
+  for (curTeam; curTeam != m_Teams.end(); ++curTeam)
+  {
+	  if ((*curTeam) == team) break;
+  }
+  if (curTeam == m_Teams.end())
+  {
+	  m_Teams.push_back(team);
+  }
+
   while (NumBotsToAdd--)
   {
     //create a bot. (its position is irrelevant at this point because it will
     //not be rendered until it is spawned)
-    Raven_Bot* rb = new Raven_Bot(this, Vector2D());
+    Raven_Bot* rb = new Raven_Bot(team, this, Vector2D());
 
     //switch the default steering behaviors on
     rb->GetSteering()->WallAvoidanceOn();
@@ -291,9 +305,9 @@ void Raven_Game::NotifyAllBotsOfRemoval(Raven_Bot* pRemovedBot)const
 //
 //  removes the last bot to be added from the game
 //-----------------------------------------------------------------------------
-void Raven_Game::RemoveBot()
+void Raven_Game::RemoveBot(Team* team)
 {
-  m_bRemoveABot = true;
+	m_pRemoveABot = team;
 }
 
 //--------------------------- AddBolt -----------------------------------------
@@ -396,7 +410,8 @@ bool Raven_Game::LoadMap(const std::string& filename)
   //load the new map data
   if (m_pMap->LoadMap(filename))
   { 
-    AddBots(script->GetInt("NumBots"));
+	  AddBots(script->GetInt("NumBotsTeam1"), new Team(1, &Cgdi::RedBrush));
+	  AddBots(script->GetInt("NumBotsTeam2"), new Team(2, &Cgdi::BlueBrush));
   
     return true;
   }

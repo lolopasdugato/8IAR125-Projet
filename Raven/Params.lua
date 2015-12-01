@@ -4,7 +4,8 @@
 
 --the number of bots the game instantiates
 
-NumBots   = 3
+NumBotsTeam1   = 3
+NumBotsTeam2   = 1
 
 --this is the maximum number of search cycles allocated to *all* current path
 -- planning searches per update
@@ -180,4 +181,3 @@ Pellet_Persistance = 0.1
 Pellet_Damage      = 1
 
 
-  
